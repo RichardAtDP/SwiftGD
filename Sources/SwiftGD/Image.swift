@@ -366,7 +366,7 @@ extension Image {
         }
 
         // open our output file, then defer it to close
-        let outputFile = fopen(url.path, "wb")
+        let outputFile : UnsafeMutablePointer<FILE>? = fopen(url.path, "wb")
         guard outputFile != UnsafeMutablePointer<FILE>(bitPattern: 0) else {
             return false
         }
