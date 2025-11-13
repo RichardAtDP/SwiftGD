@@ -371,8 +371,13 @@ extension Image {
             return false
         }
 
-        defer { fclose(outputFile) }
 
+        defer {
+            if let outputFile = outputFile {
+                fclose(outputFile)
+            }
+        }
+        
         // write the correct output format based on the path extension
         switch fileType {
         case "png":
