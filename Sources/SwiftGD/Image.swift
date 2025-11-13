@@ -323,15 +323,18 @@ public class Image {
 
 extension Image {
     public convenience init?(url: URL) {
-        let inputFile = fopen(url.path, "rb")
+        let inputFile: UnsafeMutablePointer<FILE>? = fopen(url.path, "rb")
         // On some SDKs fopen is imported as non-optional pointer; compare against a null pointer explicitly.
         guard inputFile != UnsafeMutablePointer<FILE>(bitPattern: 0) else {
             return nil
         }
 
         defer {
-            fclose(inputFile)
+            if let inputFile = inputFile {
+                fclose(inputFile)
+            }
         }
+
 
         let ext = url.lastPathComponent.lowercased()
 
